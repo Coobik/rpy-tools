@@ -8,7 +8,7 @@ You will need Python 3 (3.8+)
 
 ### usage:
 ```
-python3 rpy_indexer.py [-h] -i INPUT [-o OUTPUT] [-m MAIN_LABEL] [-s LABEL_PAGE_SIZE] [-v]
+python3 rpy_indexer.py [-h] -i INPUT [-o OUTPUT] [-m MAIN_LABEL] [-s LABEL_PAGE_SIZE] [-p FILE_NAME_PREFIX] [-v]
 ```
 
 ### options:
@@ -28,14 +28,16 @@ python3 rpy_indexer.py [-h] -i INPUT [-o OUTPUT] [-m MAIN_LABEL] [-s LABEL_PAGE_
 -s LABEL_PAGE_SIZE, --label_page_size LABEL_PAGE_SIZE
   [Optional] Max labels per menu page. Default: 20
 
+-p FILE_NAME_PREFIX, --file_name_prefix FILE_NAME_PREFIX
+  [Optional] Index file names prefix. Default: index_
+
 -v, --version
   Show version
 ```
 
 ### sample usage:
 ```
-python3 rpy_indexer.py --input "/path/to/input_directory" --output "/path/to/output_directory" -s 20 --main_label "my_cool_mod"
+python3 rpy_indexer.py --input "/path/to/input_directory" --output "/path/to/output_directory" -s 20 --main_label "my_cool_mod" -p "my_"
 ```
 
---
 --

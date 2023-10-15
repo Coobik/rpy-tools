@@ -1,4 +1,4 @@
-# RPY indexer 1.0.1
+# RPY indexer 1.0.2
 # Copyright (C) 2023 by Coobik, https://github.com/Coobik
 # All rights reserved.
 # This file is part of rpy-tools, https://github.com/Coobik/rpy-tools
@@ -14,7 +14,7 @@ import time
 from typing import Any, Generator, List, Optional, Tuple
 
 
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 URL = "https://github.com/Coobik/rpy-tools"
 
 MODE_READ = "r"
@@ -24,6 +24,7 @@ ENCODING_UTF_8 = "utf-8"
 LABEL = "label"
 LABEL_START_POS = len(LABEL)
 MAIN_INDEX_LABEL = "main_index"
+FILE_NAME_PREFIX = "index_"
 EXT_RPY = ".rpy"
 EXT_RPY_LENGTH = len(EXT_RPY)
 TAB = "    "
@@ -243,6 +244,7 @@ def process_script_file(
     output_dir_path: str,
     main_label: str,
     label_page_size: int = MAX_LABELS_PER_MENU,
+    file_name_prefix: str = FILE_NAME_PREFIX,
 ) -> Tuple[Optional[str], int]:
     """
     :returns: root_label, labels_count
@@ -254,7 +256,7 @@ def process_script_file(
     if not labels:
         return None, 0
 
-    output_file_name = "index_" + file_name
+    output_file_name = file_name_prefix + file_name
 
     root_label = write_labels_to_file(
         labels=labels,
@@ -293,6 +295,7 @@ def process_files(
     main_label: str,
     ext: Optional[str] = None,
     label_page_size: int = MAX_LABELS_PER_MENU,
+    file_name_prefix: str = FILE_NAME_PREFIX,
 ) -> List[str]:
     root_labels = []
     total_labels_count = 0
@@ -312,6 +315,7 @@ def process_files(
                     output_dir_path=output_dir_path,
                     main_label=main_label,
                     label_page_size=label_page_size,
+                    file_name_prefix=file_name_prefix,
                 )
 
                 total_labels_count += labels_count
@@ -340,6 +344,7 @@ def index_rpy_files(
     output_dir_path: Optional[str] = None,
     main_label: Optional[str] = None,
     label_page_size: int = MAX_LABELS_PER_MENU,
+    file_name_prefix: str = FILE_NAME_PREFIX,
 ):
     if input_dir_path:
         input_dir_path = input_dir_path.strip()
@@ -363,6 +368,7 @@ def index_rpy_files(
         main_label=main_label,
         ext=EXT_RPY,
         label_page_size=label_page_size,
+        file_name_prefix=file_name_prefix,
     )
 
     create_main_index_file(
@@ -415,6 +421,15 @@ def build_argument_parser() -> ArgumentParser:
     )
 
     argument_parser.add_argument(
+        "-p",
+        "--file_name_prefix",
+        default=FILE_NAME_PREFIX,
+        type=str,
+        required=False,
+        help=f"[Optional] Index file names prefix. Default: {FILE_NAME_PREFIX}",
+    )
+
+    argument_parser.add_argument(
         "-v",
         "--version",
         action="version",
@@ -438,6 +453,7 @@ def main() -> int:
             output_dir_path=args.output,
             main_label=args.main_label,
             label_page_size=args.label_page_size,
+            file_name_prefix=args.file_name_prefix,
         )
 
     except Exception as ex:
