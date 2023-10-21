@@ -290,7 +290,7 @@ def process_text_files(
     """
 
     chapter_labels = []
-    character_map = config.characters if config else {}
+    character_map = dict(config.characters) if config else {}
     total_lines = 0
 
     if not input_dir_path:
