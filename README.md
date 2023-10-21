@@ -86,7 +86,16 @@ python3 rpy_generator.py [-h] -i INPUT [-o OUTPUT] [-m MAIN_LABEL] [-s LABEL_PAG
 python3 rpy_generator.py --input "/path/to/input_directory" --output "/path/to/output_directory" -m "my_cool_mod" --config "/path/to/config.yaml"
 ```
 
-### optional config.yaml
+### sample input .txt plain text screenplay file:
+```
+Hello world
+Me: Hi all
+Boy: Hi
+Girl: Hey you
+Someone in the crowd: Who's there?
+```
+
+### sample optional config.yaml
 ```
 characters:
   "Me": me
@@ -94,13 +103,25 @@ characters:
   "Boy": boy
 ```
 
-Such a config results in the following `init` section in the main .rpy file:
+Such a config results in the following `init` section in the main `my_cool_mod.rpy` file:
 ```
 init:
+    $ mods["my_cool_mod"] = u"my_cool_mod"
     define me = Character(u"Me")
     define girl = Character(u"Girl")
     define boy = Character(u"Boy")
-    # other characters found in screenplay text files go here
+    define ch_3 = Character(u"Someone in the crowd")
+```
+
+### sample output .rpy script file:
+```
+label scenario:
+
+    "Hello world"
+    me "Hi all"
+    boy "Hi"
+    girl "Hey you"
+    ch_3 "Who's there?"
 ```
 
 --
