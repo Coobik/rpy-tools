@@ -1,4 +1,4 @@
-# RPY generator 1.0.1
+# RPY generator 1.0.2
 # Copyright (C) 2023 by Coobik, https://github.com/Coobik
 # All rights reserved.
 # This file is part of rpy-tools, https://github.com/Coobik/rpy-tools
@@ -15,7 +15,7 @@ from typing import Any, Dict, Generator, List, Mapping, NamedTuple, Optional, Tu
 import yaml
 
 
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 URL = "https://github.com/Coobik/rpy-tools"
 
 MODE_READ = "r"
@@ -63,6 +63,7 @@ class ScriptConfig:
 
     @property
     def characters(self) -> Dict[str, str]:
+        # TODO: store UPPERCASE character names
         return self.config.get("characters") or {}
 
 
@@ -88,6 +89,23 @@ def normalize_label(
     return label
 
 
+def normalize_character_name(character_name: str) -> Optional[str]:
+    if not character_name:
+        return None
+
+    character_name = character_name.strip()
+
+    if not character_name:
+        return None
+
+    character_name = character_name.replace("ё", "е")
+    character_name = character_name.replace("Ё", "Е")
+
+    character_name = character_name.title()
+
+    return character_name
+
+
 def parse_text_line(line: str) -> Optional[ScriptLine]:
     if not line:
         return None
@@ -109,11 +127,12 @@ def parse_text_line(line: str) -> Optional[ScriptLine]:
         return None
 
     line_length = len(line)
-    character_name = line[0:colon_index].rstrip()
+    character_name = line[0:colon_index]
+    character_name = normalize_character_name(character_name)
 
     if colon_index == (line_length - 1):
         return ScriptLine(
-            character_name=(character_name if character_name else None),
+            character_name=character_name,
             phrase=ELLIPSIS,
         )
 
@@ -123,7 +142,7 @@ def parse_text_line(line: str) -> Optional[ScriptLine]:
         return None
 
     return ScriptLine(
-        character_name=(character_name if character_name else None),
+        character_name=character_name,
         phrase=(phrase if phrase else ELLIPSIS),
     )
 
