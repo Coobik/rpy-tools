@@ -63,7 +63,6 @@ class ScriptConfig:
 
     @property
     def characters(self) -> Dict[str, str]:
-        # TODO: store UPPERCASE character names
         return self.config.get("characters") or {}
 
 
