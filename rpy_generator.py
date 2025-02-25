@@ -15,7 +15,7 @@ from typing import Any, Dict, Generator, List, Mapping, NamedTuple, Optional, Tu
 import yaml
 
 
-VERSION = "1.0.2"
+VERSION = "1.0.3"
 URL = "https://github.com/Coobik/rpy-tools"
 
 MODE_READ = "r"
@@ -136,6 +136,7 @@ def parse_text_line(line: str) -> Optional[ScriptLine]:
         )
 
     phrase = line[(colon_index + 1) :].strip()
+    phrase = phrase.replace('"', '\\"')
 
     if (not character_name) and (not phrase):
         return None
